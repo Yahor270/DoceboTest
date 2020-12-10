@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Standard_Instance_Licences</fullName>
+    <active>true</active>
+    <description>Standard Instances must have number of licences greater than 0</description>
+    <errorConditionFormula>AND(ISPICKVAL( Type__c , &apos;Standard&apos;),
+    OR(Number_of_Licences__c  &lt; 1,  
+       ISNULL(Number_of_Licences__c)))</errorConditionFormula>
+    <errorDisplayField>Number_of_Licences__c</errorDisplayField>
+    <errorMessage>Standard Instance must have licences</errorMessage>
+</ValidationRule>

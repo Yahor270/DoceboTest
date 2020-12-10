@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Standard_to_Trial</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISCHANGED( Type__c ) ,
+     ISPICKVAL(Type__c, &apos;Trial&apos;) )</errorConditionFormula>
+    <errorMessage>Standard Instance cannot be turned into Trial</errorMessage>
+</ValidationRule>
