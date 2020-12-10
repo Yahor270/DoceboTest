@@ -1,6 +1,7 @@
 public with sharing class OpportunityTriggerHandler {
 
     public static void createInstances(List<Opportunity> newOpportunities) {
+        //defining closed won opportunities
         List<Opportunity> wonOpps = new List<Opportunity>();
         for(Opportunity opp : newOpportunities) {
             if(opp.IsWon) {
@@ -11,7 +12,7 @@ public with sharing class OpportunityTriggerHandler {
         if(wonOpps.isEmpty()) {
             return;
         }
-
+        //quering opportunities with account names for instance naming
         List<Opportunity> oppsWithAccountNames = [SELECT AccountId, Account.Name, Total_Quantity__c FROM Opportunity WHERE ID IN : wonOpps];
 
         List<Instance__c> newInstances = new List<Instance__c>();
