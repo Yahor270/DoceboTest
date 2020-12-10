@@ -28,7 +28,7 @@ public with sharing class OpportunityTriggerHandler {
         newInst.Type__c = 'Standard';
         newInst.Account__c = newOpp.AccountId;
         newInst.Number_of_Licences__c = newOpp.Total_Quantity__c;
-        System.debug('instance == '+newInst);
+      
         return newInst;
     }
 }
