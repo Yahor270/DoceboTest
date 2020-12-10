@@ -1,8 +1,9 @@
 public with sharing class InstanceTriggerHandler {
 
     public static void addNewLicences(List<Instance__c> newInstances) {
-
+        
         Map<Id, Decimal> accountMap = new Map<Id, Decimal>();
+        //calculating overal quantity of new liceneces for each account
         for(Instance__c inst : newInstances) {
             if(inst.Type__c == 'Standard') {
                 if(accountMap.get(inst.Account__c) != null) {
@@ -22,9 +23,11 @@ public with sharing class InstanceTriggerHandler {
     }
 
     public static void updateLicencesNumber(Map<Id, Instance__c> oldInstances, Map<Id, Instance__c> newInstances) {
+
         Map<Id, Decimal> deltaMap = new Map<Id, Decimal>();
-        //calculating
+        //calculating licences delta for each account
         for(Id instId : newInstances.keyset()) {
+            //for instances which remained their type
             if(newInstances.get(instId).Type__c == 'Standard' && oldInstances.get(instId).Type__c == 'Standard') {
                 Decimal delta = newInstances.get(instId).Number_of_Licences__c - oldInstances.get(instId).Number_of_Licences__c;
                 if(deltaMap.get(newInstances.get(instId).Account__c) != null) {
@@ -34,6 +37,7 @@ public with sharing class InstanceTriggerHandler {
                     deltaMap.put(newInstances.get(instId).Account__c, delta);
                 }
             } else if(newInstances.get(instId).Type__c == 'Standard' && oldInstances.get(instId).Type__c == 'Trial') {
+                 //for instances which changed their type to standard
                 if(deltaMap.get(newInstances.get(instId).Account__c) != null) {
                     Decimal currentValue = deltaMap.get(newInstances.get(instId).Account__c);
                     deltaMap.put(newInstances.get(instId).Account__c, currentValue + newInstances.get(instId).Number_of_Licences__c);
@@ -51,7 +55,9 @@ public with sharing class InstanceTriggerHandler {
     }
 
     public static void removeLicences(List<Instance__c> deletedInstances) {
+
         Map<Id, Decimal> accountMap = new Map<Id, Decimal>();
+        //calculating overal quantity of liceneces to delete for each account
         for(Instance__c inst : deletedInstances) {
             if(inst.Type__c == 'Standard') {
                 if(accountMap.get(inst.Account__c) != null) {
@@ -71,6 +77,7 @@ public with sharing class InstanceTriggerHandler {
     }
 
     public static void removeInstances(Map<Id, Account> deletedAccounts) {
+        
         List<Instance__c> instToDelete = new List<Instance__c>();
         instToDelete = [SELECT Id FROM Instance__c WHERE Account__c IN : deletedAccounts.keyset()];
 
